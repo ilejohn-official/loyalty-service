@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use App\Models\LoyaltyTransaction;
 use App\Models\PaymentTransaction;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\LoyaltyTransactionResource;
 use App\Http\Requests\Api\V1\MonthlySummaryRequest;
 use App\Http\Requests\Api\V1\ProcessCashbackRequest;
 
@@ -30,9 +32,9 @@ class LoyaltyController extends Controller
 
     return response()->json([
       'data' => [
-        'transactions' => $transactions,
+        'transactions' => LoyaltyTransactionResource::collection($transactions),
         'total_points' => $totalPoints,
-        'user' => $user->only(['id', 'name']),
+        'user' => new UserResource($user),
       ],
     ]);
   }

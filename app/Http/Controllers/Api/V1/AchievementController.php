@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ShowAchievementRequest;
+use App\Http\Resources\AchievementResource;
+use App\Http\Resources\UserResource;
 use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -26,9 +28,9 @@ class AchievementController extends Controller
 
     return response()->json([
       'data' => [
-        'achievements' => $achievements,
+        'achievements' => AchievementResource::collection($achievements),
         'total_unlocked' => $achievements->count(),
-        'user' => $user->only(['id', 'name']),
+        'user' => new UserResource($user),
       ],
     ]);
   }
@@ -47,7 +49,7 @@ class AchievementController extends Controller
       ->where('achievement_type', $achievementType)
       ->firstOrFail();
     return response()->json([
-      'data' => $achievement,
+      'data' => new AchievementResource($achievement),
     ]);
   }
 }

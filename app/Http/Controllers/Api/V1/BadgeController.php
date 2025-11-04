@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
 use App\Models\Badge;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ShowBadgeRequest;
+use App\Http\Resources\BadgeResource;
+use App\Http\Resources\UserResource;
 
 class BadgeController extends Controller
 {
@@ -26,10 +27,10 @@ class BadgeController extends Controller
 
     return response()->json([
       'data' => [
-        'badges' => $badges,
+        'badges' => BadgeResource::collection($badges),
         'total_earned' => $badges->count(),
         'highest_level' => $badges->max('level'),
-        'user' => $user->only(['id', 'name']),
+        'user' => new UserResource($user),
       ],
     ]);
   }
@@ -48,7 +49,7 @@ class BadgeController extends Controller
       ->where('badge_type', $badgeType)
       ->firstOrFail();
     return response()->json([
-      'data' => $badge,
+      'data' => new BadgeResource($badge),
     ]);
   }
 }
