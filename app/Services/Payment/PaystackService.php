@@ -2,7 +2,7 @@
 
 namespace App\Services\Payment;
 
-use App\Models\User;
+use App\DTOs\UserDto;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Contracts\Payment\PaymentServiceInterface;
@@ -24,7 +24,7 @@ class PaystackService implements PaymentServiceInterface
     return 'paystack';
   }
 
-  public function processCashback(User $user, float $amount): array
+  public function processCashback(UserDto $user, float $amount): array
   {
     try {
       $response = Http::withHeaders([

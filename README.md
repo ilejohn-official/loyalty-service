@@ -129,15 +129,29 @@ Example test endpoints:
 
 ```bash
 # Process a purchase
-POST /api/v1/users/{user}/purchases
+POST /api/v1/users/{user_id}/purchases
 {
     "amount": 15000,
     "transaction_reference": "TXN_123456789"
 }
 
 # Check cashback status
-GET /api/v1/users/{user}/cashback
+GET /api/v1/users/{user_id}/cashback
 ```
+
+### User service configuration
+
+The loyalty service resolves user details via a `UserClient`. By default it will try to load a local `User` record from the application's database. If you run the loyalty service as a standalone microservice, configure a user service base URL so it can fetch user details remotely.
+
+Set these environment variables (or edit `config/user.php`):
+
+```env
+USER_SERVICE_URL=https://users.service.internal
+USER_SERVICE_TIMEOUT=2
+USER_SERVICE_INTERNAL_ENDPOINT=/api/v1/internal/users/
+```
+
+The `UserClient` will first attempt a local DB lookup and then fall back to calling the configured user service. Controllers and jobs accept a `user_id` and resolve the user through `UserClient` so the loyalty service can run independently from the user datastore.
 
 ### Security Considerations
 

@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Payment;
 
-use App\Models\User;
+use App\DTOs\UserDto;
 
 interface PaymentServiceInterface
 {
@@ -13,7 +13,7 @@ interface PaymentServiceInterface
    * @param float $amount
    * @return array{success: bool, reference?: string, message: string}
    */
-  public function processCashback(User $user, float $amount): array;
+  public function processCashback(UserDto $user, float $amount): array;
 
   /**
    * Verify a transaction reference with the payment provider.

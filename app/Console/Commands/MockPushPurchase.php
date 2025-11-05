@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\User;
 use App\Jobs\ProcessPurchaseEvent;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,6 +24,8 @@ class MockPushPurchase extends Command
 
   public function handle(): int
   {
+    $this->info('Starting mock purchase processing...');
+
     $input = [
       'user_id' => $this->argument('user_id'),
       'amount' => $this->argument('amount'),
@@ -32,7 +33,7 @@ class MockPushPurchase extends Command
     ];
 
     $validator = Validator::make($input, [
-      'user_id' => ['required', 'integer', 'exists:users,id'],
+      'user_id' => ['required', 'integer'],
       'amount' => ['required', 'numeric', 'min:0.01'],
       'reference' => ['required', 'string'],
     ]);
@@ -49,10 +50,8 @@ class MockPushPurchase extends Command
     $amount = (float) $input['amount'];
     $reference = (string) $input['reference'];
 
-    $user = User::find($userId);
-
     // Dispatch synchronously so the ProcessPurchaseEvent runs in-process
-    ProcessPurchaseEvent::dispatchSync($user, $amount, $reference);
+    ProcessPurchaseEvent::dispatchSync($userId, $amount, $reference);
 
     $this->info("Mock purchase for user {$userId} processed (amount={$amount}, reference={$reference}).");
     return self::SUCCESS;

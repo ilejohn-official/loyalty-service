@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
 use App\Services\BadgeService;
+use App\Services\UserClient;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -19,11 +19,17 @@ class BadgeController extends Controller
   /**
    * Get user's badges.
    *
-   * @param  \App\Models\User  $user
+   * @param  int  $user_id
    * @return \Illuminate\Http\JsonResponse
    */
-  public function index(User $user): JsonResponse
+  public function index(int $user_id, UserClient $userClient): JsonResponse
   {
+    $user = $userClient->getById($user_id);
+
+    if (! $user) {
+      return response()->json(['message' => 'User not found'], 404);
+    }
+
     $badgeData = $this->badgeService->getUserBadges($user);
 
     return response()->json([
@@ -38,12 +44,18 @@ class BadgeController extends Controller
    * Get specific badge details.
    *
    * @param  ShowBadgeRequest  $request
-   * @param  User  $user
+   * @param  int  $user_id
    * @param  string  $badgeType
    * @return \Illuminate\Http\JsonResponse
    */
-  public function show(ShowBadgeRequest $request, User $user, string $badgeType): JsonResponse
+  public function show(ShowBadgeRequest $request, int $user_id, string $badgeType, UserClient $userClient): JsonResponse
   {
+    $user = $userClient->getById($user_id);
+
+    if (! $user) {
+      return response()->json(['message' => 'User not found'], 404);
+    }
+
     return response()->json([
       'data' => new BadgeResource(
         $this->badgeService->getUserBadgeByType($user, $badgeType)
