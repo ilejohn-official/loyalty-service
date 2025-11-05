@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -17,13 +17,17 @@ return new class extends Migration
       $table->decimal('amount', 10, 2);
       $table->string('type');
       $table->integer('points_earned');
+      $table->string('reference');
       $table->timestamp('created_at');
 
       // Index for user_id
       $table->index('user_id');
 
-      // Partition by month
-      $table->string('partition_key')->virtualAs("DATE_FORMAT(created_at, '%Y%m')")->index();
+      // Unique index for transaction reference to ensure idempotency
+      $table->unique('reference');
+
+      // Index for type+user_id queries
+      $table->index(['type', 'user_id']);
     });
   }
 

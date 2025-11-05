@@ -21,7 +21,6 @@ return new class extends Migration
 
       // Indexes
       $table->index('user_id');
-      $table->index('provider_reference');
     });
   }
 
