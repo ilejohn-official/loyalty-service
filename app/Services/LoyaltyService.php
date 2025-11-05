@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use App\Services\Payment\PaymentServiceInterface;
+use Illuminate\Support\Facades\Log;
+use App\Contracts\Payment\PaymentServiceInterface;
 
 class LoyaltyService
 {
