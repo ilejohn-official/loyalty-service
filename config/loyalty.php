@@ -1,5 +1,8 @@
 <?php
 
+use App\Services\Payment\PaystackService;
+use App\Services\Payment\FlutterwaveService;
+
 return [
   /*
     |--------------------------------------------------------------------------
@@ -41,14 +44,14 @@ return [
       'secret_key' => env('PAYSTACK_SECRET_KEY'),
       'public_key' => env('PAYSTACK_PUBLIC_KEY'),
       'base_url' => env('PAYSTACK_BASE_URL', 'https://api.paystack.co'),
-      'class' => App\Services\Payment\PaystackService::class,
+      'class' => PaystackService::class,
     ],
     'flutterwave' => [
       'secret_key' => env('FLUTTERWAVE_SECRET_KEY'),
       'public_key' => env('FLUTTERWAVE_PUBLIC_KEY'),
       'base_url' => env('FLUTTERWAVE_BASE_URL', 'https://api.flutterwave.com/v3'),
       'encryption_key' => env('FLUTTERWAVE_ENCRYPTION_KEY'),
-      'class' => App\Services\Payment\FlutterwaveService::class,
+      'class' => FlutterwaveService::class,
     ],
   ],
 ];

@@ -99,6 +99,24 @@ Run the queue worker:
 php artisan queue:work
 ```
 
+#### Local Kafka queue simulation (developer)
+
+For local development and demos, you can simulate the Kafka event queue using the provided Artisan command. This command dispatches the existing purchase job synchronously (in-process) and exercises the same achievement/badge unlocking logic and notifications without requiring Kafka or a queue driver.
+
+Usage:
+
+```bash
+php artisan mock:push-purchase {user_id} {amount} {reference}
+```
+
+Example:
+
+```bash
+php artisan mock:push-purchase 1 12000 REF-TEST-1
+```
+
+Note: The previous HTTP mock endpoint was removed; use the artisan command above to simulate purchase events locally.
+
 ### Testing Payment Providers
 
 To test the payment providers:

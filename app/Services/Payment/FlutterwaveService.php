@@ -3,11 +3,11 @@
 namespace App\Services\Payment;
 
 use App\Models\User;
-use App\Contracts\Payment\PaymentServiceInterface as ContractPaymentServiceInterface;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use App\Contracts\Payment\PaymentServiceInterface;
 
-class FlutterwaveService implements ContractPaymentServiceInterface
+class FlutterwaveService implements PaymentServiceInterface
 {
   protected string $secretKey;
   protected string $baseUrl;
