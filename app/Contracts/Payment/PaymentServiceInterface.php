@@ -17,5 +17,5 @@ interface PaymentServiceInterface
     /**
      * Verify a transaction reference with the payment provider.
      */
-  public function verifyTransaction(string $reference): bool;
+    public function verifyTransaction(string $reference): bool;
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Tests\TestCase;
 use App\Models\User;
+use Tests\TestCase;
 
 uses(TestCase::class)->in('Feature', 'Unit');
 uses()->beforeEach(function () {
@@ -33,7 +33,7 @@ uses()->beforeEach(function () {
             {
                 // In tests we consider all references valid
                 return true;
-      }
+            }
         };
     });
 })->in('Feature', 'Unit');

@@ -5,19 +5,18 @@ namespace App\Jobs;
 use App\Services\LoyaltyService;
 use App\Services\UserClient;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessPurchaseEvent implements ShouldQueue
+class ProcessPurchaseEvent
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(
-        protected int $userId,
-        protected float $amount,
-        protected string $transactionReference
+        public int $userId,
+        public float $amount,
+        public string $transactionReference
     ) {}
 
     public function handle(UserClient $userClient, LoyaltyService $loyaltyService): void

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Contracts\Messaging\MessageQueueInterface;
 use App\Contracts\Payment\PaymentServiceInterface;
+use App\Services\Messaging\InMemoryQueueService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -28,6 +30,17 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return $app->make($providerClass);
+        });
+
+        $this->app->singleton(MessageQueueInterface::class, function () {
+            $driver = config('events.driver', 'in-memory');
+
+            // Prod: switch to RabbitMQ/Kafka implementations
+            return match ($driver) {
+                // 'rabbitmq' => new \App\Services\Messaging\RabbitMQService(config('events.rabbitmq')),
+                // 'kafka' => new \App\Services\Messaging\KafkaQueueService(config('events.kafka')),
+                default => new InMemoryQueueService,
+            };
         });
     }
 
