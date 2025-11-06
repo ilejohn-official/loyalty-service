@@ -7,7 +7,7 @@ const App = () => (
   <Router>
     <Routes>
       {/* Customer Dashboard */}
-      <Route path="/" element={<CustomerDashboard />} /> 
+      <Route path="/:userId" element={<CustomerDashboard />} /> 
 
       {/* Admin Routes */}
       <Route path="/admin/login" element={<AdminLogin />} />
