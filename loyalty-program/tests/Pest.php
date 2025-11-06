@@ -1,20 +1,15 @@
 <?php
 
-use App\Models\User;
 use Tests\TestCase;
+use App\Models\User;
 
 uses(TestCase::class)->in('Feature', 'Unit');
 uses()->beforeEach(function () {
     // Run migrations
     $this->artisan('migrate:fresh');
 
-    // Create regular test user
+    // Create test user
     $this->user = User::factory()->create();
-
-    // Create admin user
-    $this->admin = User::factory()->create([
-        'is_admin' => true,
-    ]);
 
     // Bind a simple fake payment service for tests to avoid external HTTP calls
     $this->app->bind(\App\Contracts\Payment\PaymentServiceInterface::class, function () {

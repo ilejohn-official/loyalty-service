@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,21 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create 10 test users
+        // Create 10 random test users
         User::factory(10)->create();
 
-        // Create test user for easy login
+        // Create specfic test user
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-        ]);
-
-        // Create an admin user for testing admin routes
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'is_admin' => true,
-            'password' => Hash::make('admin_password'),
         ]);
 
         // Run other seeders
