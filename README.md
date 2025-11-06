@@ -31,17 +31,6 @@ To run the entire stack, ensure you have **Docker** and **Docker Compose** insta
 
 ### 1. Clone and Prepare Files
 
-Ensure your project structure looks like this, with `.env` files created:
-
-.
-├── loyalty-program/ # Laravel Backend (with Dockerfile)
-│ ├── .env
-│ ├── .env.testing # Required for test database config
-│ └── ...
-├── loyalty-program-fe/ # React Frontend (with Dockerfile)
-│ └── ...
-└── docker-compose.yml # Docker Configuration
-
 Action
 
 Create a `.env` file inside the **loyalty-program** directory to hold your configuration variables  
@@ -55,6 +44,8 @@ DB_PASSWORD=secret
 DB_ROOT_PASSWORD=root_secret
 
 # Generate a key
+php artisan key:generate
+
 APP_KEY=base64:xxx...
 ```
 
