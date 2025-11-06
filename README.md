@@ -77,7 +77,7 @@ docker compose exec backend php artisan db:seed
 
 Application URL Credentials / Notes
 Customer Dashboard
-<http://localhost:5173/[USER_ID>
+<http://localhost:5173/[USER_ID]>
 Use any ID (e.g., /3)
 For Prepopulated seeders, you have 1-11 as user ids
 
