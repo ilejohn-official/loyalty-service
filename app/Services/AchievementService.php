@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use App\Events\AchievementUnlocked;
-use App\Models\Achievement;
-use App\Models\AchievementProgress;
 use App\DTOs\UserDto;
+use App\Models\Achievement;
 use App\Enums\AchievementType;
-use Illuminate\Support\Facades\DB;
+use App\Events\AchievementUnlocked;
+use App\Models\AchievementProgress;
 
 class AchievementService
 {
@@ -17,44 +16,52 @@ class AchievementService
     $progressAchievements = AchievementProgress::query()
       ->where('user_id', $user->id)
       ->selectRaw(
-      '
+        '
         id,
         achievement_type,
         current_value,
         target_value,
         CASE 
           WHEN achievement_type IN (?, ?) THEN current_value + ?
-          WHEN achievement_type IN (?, ?) THEN current_value + 1
+          WHEN achievement_type IN (?, ?, ?) THEN current_value + 1
           ELSE current_value
         END as new_value',
-      [
-        AchievementType::SPEND_AMOUNT_100->value,
-        AchievementType::SPEND_AMOUNT_1000->value,
-        $amount,
-        AchievementType::PURCHASE_COUNT_5->value,
-        AchievementType::PURCHASE_COUNT_10->value
-      ]
+        [
+          AchievementType::SPEND_AMOUNT_100->value,
+          AchievementType::SPEND_AMOUNT_1000->value,
+          $amount,
+          AchievementType::FIRST_PURCHASE->value,
+          AchievementType::PURCHASE_COUNT_5->value,
+          AchievementType::PURCHASE_COUNT_10->value,
+        ]
       )
       ->get();
 
     foreach ($progressAchievements as $progress) {
-      // Update progress
+
       AchievementProgress::query()
         ->where('id', $progress->id)
         ->update(['current_value' => $progress->new_value]);
 
+      // Refresh the progress object to get the actual updated value
+      $updatedProgress = AchievementProgress::find($progress->id);
+
       // Check if achievement should be unlocked
-      if ($progress->new_value >= $progress->target_value) {
+      if ($updatedProgress->current_value >= $updatedProgress->target_value) {
+
         // Try to create achievement - will fail if exists due to unique constraint
         $achievement = Achievement::query()
           ->firstOrCreate(
             [
               'user_id' => $user->id,
-              'achievement_type' => $progress->achievement_type
+              'achievement_type' => $updatedProgress->achievement_type,
             ],
             [
               'unlocked_at' => now(),
-              'metadata' => json_encode([])
+              'metadata' => json_encode([
+                'current_value' => $updatedProgress->current_value,
+                'target_value' => $updatedProgress->target_value,
+              ]),
             ]
           );
 

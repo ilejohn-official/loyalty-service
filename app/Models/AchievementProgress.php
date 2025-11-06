@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Enums\AchievementType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
@@ -16,20 +16,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class AchievementProgress extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $table = 'achievement_progress';
+    protected $table = 'achievement_progress';
 
-  protected $fillable = [
-    'user_id',
-    'achievement_type',
-    'current_value',
-    'target_value'
-  ];
+    protected $fillable = [
+        'user_id',
+        'achievement_type',
+        'current_value',
+        'target_value',
+    ];
 
-  protected $casts = [
-    'current_value' => 'float',
-    'target_value' => 'float',
-    'achievement_type' => AchievementType::class,
-  ];
+    protected $casts = [
+        'current_value' => 'float',
+        'target_value' => 'float',
+        'achievement_type' => AchievementType::class,
+    ];
 }

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -22,28 +21,18 @@ class LoyaltyTransaction extends Model
 {
   use HasFactory;
 
-  public $timestamps = false;
-
   protected $fillable = [
     'user_id',
     'amount',
     'type',
     'points_earned',
-    'created_at',
+    'reference'
   ];
 
   protected $casts = [
     'amount' => 'decimal:2',
     'points_earned' => 'integer',
-    'created_at' => 'datetime',
+    //'created_at' => 'datetime',
     'type' => TransactionType::class,
   ];
-
-  /**
-   * Scope transactions by month (YYYYMM) using created_at.
-   */
-  public function scopeForMonth(Builder $query, string $yyyymm): Builder
-  {
-    return $query->whereRaw("DATE_FORMAT(created_at, '%Y%m') = ?", [$yyyymm]);
-  }
 }

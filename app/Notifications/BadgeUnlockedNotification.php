@@ -10,34 +10,34 @@ use Illuminate\Notifications\Notification;
 
 class BadgeUnlockedNotification extends Notification implements ShouldQueue
 {
-  use Queueable;
+    use Queueable;
 
-  public function __construct(
-    protected BadgeUnlocked $event
-  ) {}
+    public function __construct(
+        protected BadgeUnlocked $event
+    ) {}
 
-  public function via($notifiable): array
-  {
-    return ['mail', 'database'];
-  }
+    public function via($notifiable): array
+    {
+        return ['mail', 'database'];
+    }
 
-  public function toMail($notifiable): MailMessage
-  {
-    return (new MailMessage)
-      ->subject('New Badge Unlocked! 🎖')
-      ->line('Congratulations! You\'ve unlocked a new badge:')
-      ->line($this->event->badge->name)
-      ->line($this->event->badge->description)
-      ->action('View Your Badges', url('/badges'));
-  }
+    public function toMail($notifiable): MailMessage
+    {
+        return (new MailMessage)
+            ->subject('New Badge Unlocked! 🎖')
+            ->line('Congratulations! You\'ve unlocked a new badge:')
+            ->line($this->event->badge->name)
+            ->line($this->event->badge->description)
+            ->action('View Your Badges', url('/badges'));
+    }
 
-  public function toDatabase($notifiable): array
-  {
-    return [
-      'message' => "You've unlocked the {$this->event->badge->name} badge!",
-      'badge_id' => $this->event->badge->id,
-      'badge_name' => $this->event->badge->name,
-      'badge_description' => $this->event->badge->description,
-    ];
-  }
+    public function toDatabase($notifiable): array
+    {
+        return [
+            'message' => "You've unlocked the {$this->event->badge->name} badge!",
+            'badge_id' => $this->event->badge->id,
+            'badge_name' => $this->event->badge->name,
+            'badge_description' => $this->event->badge->description,
+        ];
+    }
 }

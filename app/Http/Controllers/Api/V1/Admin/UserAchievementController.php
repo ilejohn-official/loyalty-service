@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Admin\ListUserAchievementsRequest;
-use App\Models\Achievement;
-use App\Models\Badge;
 use App\Models\User;
-use App\Services\UserClient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\Admin\ListUserAchievementsRequest;
 
 class UserAchievementController extends Controller
 {
@@ -49,40 +46,5 @@ class UserAchievementController extends Controller
                 'last_page' => $users->lastPage(),
             ],
         ]);
-    }
-
-    /**
-     * Get detailed achievement and badge information for a specific user.
-     */
-    public function show(int $user_id, UserClient $userClient): JsonResponse
-    {
-        $user = $userClient->getById($user_id);
-
-        if (! $user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-
-        $achievements = Achievement::query()
-            ->forUser($user->id)
-            ->get();
-
-        $badges = Badge::query()
-            ->forUser($user->id)
-            ->get();
-
-        return response()->json([
-            'data' => [
-                'user' => $user,
-                'achievements' => [
-                    'total' => $achievements->count(),
-                    'items' => $achievements,
-                ],
-                'badges' => [
-                    'total' => $badges->count(),
-                    'highest_level' => $badges->max('level'),
-                    'items' => $badges,
-                ],
-            ],
-        ]);
-    }
+  }
 }

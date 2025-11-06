@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Enums\BadgeType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Badge
@@ -19,34 +18,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Badge extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  /**
-   * Indicates if the model should be timestamped.
-   *
-   * @var bool
-   */
-  public $timestamps = false;
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 
-  protected $fillable = [
-    'user_id',
-    'badge_type',
-    'level',
-    'earned_at',
-  ];
+    protected $fillable = [
+        'user_id',
+        'badge_type',
+        'level',
+        'earned_at',
+    ];
 
-  protected $casts = [
-    'level' => 'integer',
-    'earned_at' => 'datetime',
-    'badge_type' => BadgeType::class,
-  ];
+    protected $casts = [
+        'level' => 'integer',
+        'earned_at' => 'datetime',
+        'badge_type' => BadgeType::class,
+    ];
 
-
-  /**
-   * Scope to a user's badges.
-   */
-  public function scopeForUser(Builder $query, $userId): Builder
-  {
-    return $query->where('user_id', $userId);
-  }
+    /**
+     * Scope to a user's badges.
+     */
+    public function scopeForUser(Builder $query, $userId): Builder
+    {
+        return $query->where('user_id', $userId);
+    }
 }

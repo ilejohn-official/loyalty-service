@@ -1,18 +1,17 @@
 <?php
 
-use App\Enums\AchievementType;
 use App\Enums\BadgeType;
+use App\Enums\AchievementType;
 use App\Models\PaymentTransaction;
 
 use function Pest\Laravel\getJson;
 
 test('complete loyalty program flow', function () {
-    // 1. Initially user has no achievements or badges
-    $initialAchievements = getJson("/api/v1/users/{$this->user->id}/achievements");
-    $initialBadges = getJson("/api/v1/users/{$this->user->id}/badges");
+  // 1. Initially user has no achievements or badges
+  $initialData = getJson("/api/v1/users/{$this->user->id}/achievements");
 
-    expect($initialAchievements->json('data.total_unlocked'))->toBe(0)
-        ->and($initialBadges->json('data.total_earned'))->toBe(0);
+  expect($initialData->json('data.total_unlocked'))->toBe(0)
+    ->and($initialData->json('data.total_earned'))->toBe(0);
 
     // 2. Create multiple payment transactions and process them to trigger achievements
     $payments = PaymentTransaction::factory()->count(5)->create([
@@ -25,12 +24,7 @@ test('complete loyalty program flow', function () {
     $loyaltyService = app(\App\Services\LoyaltyService::class);
     $userDto = \App\DTOs\UserDto::fromModel($this->user);
 
-    // Check initial progress
-    $initialProgress = \App\Models\AchievementProgress::where('user_id', $this->user->id)
-        ->where('achievement_type', \App\Enums\AchievementType::FIRST_PURCHASE)
-        ->first();
-
-    \App\Models\AchievementProgress::factory()->create([
+  \App\Models\AchievementProgress::factory()->create([
         'user_id' => $this->user->id,
         'achievement_type' => \App\Enums\AchievementType::FIRST_PURCHASE,
         'current_value' => 0,
@@ -74,15 +68,14 @@ test('complete loyalty program flow', function () {
 
     $loyaltyService->processPurchase($userDto, (float) $largePayment->amount, $largePayment->provider_reference);
 
-    // 5. Verify spend achievement unlocked
-    $achievements = getJson("/api/v1/users/{$this->user->id}/achievements");
-    $unlocked = $achievements->json('data.unlocked');
+  // 5. Verify spend achievement unlocked
+  $achievementsAndBadges = getJson("/api/v1/users/{$this->user->id}/achievements");
+  $unlocked = $achievementsAndBadges->json('data.unlocked');
     $types = array_column($unlocked ?: [], 'achievement_type');
 
     expect($types)->toContain(AchievementType::SPEND_AMOUNT_100->value);
 
-    // 6. Verify bronze badge awarded
-    $badges = getJson("/api/v1/users/{$this->user->id}/badges");
-    $badgeTypes = array_column($badges->json('data.badges') ?: [], 'badge_type');
+  // 6. Verify bronze badge awarded
+  $badgeTypes = array_column($achievementsAndBadges->json('data.badges') ?: [], 'badge_type');
     expect($badgeTypes)->toContain(BadgeType::BRONZE_SPENDER->value);
 });

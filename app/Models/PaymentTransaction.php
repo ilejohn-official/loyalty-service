@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use App\Enums\PaymentStatus;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class PaymentTransaction
@@ -20,27 +19,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class PaymentTransaction extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'user_id',
-    'amount',
-    'provider_reference',
-    'status',
-  ];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'amount',
+        'provider_reference',
+        'status',
+    ];
 
-  /**
-   * The attributes that should be cast.
-   *
-   * @var array<string, string>
-   */
-  protected $casts = [
-    'amount' => 'decimal:2',
-    'status' => PaymentStatus::class,
-  ];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'status' => PaymentStatus::class,
+    ];
 }
