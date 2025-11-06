@@ -2,6 +2,49 @@
 
 A Laravel-based loyalty program API with achievement tracking, badges, and cashback rewards.
 
+## Initial Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/ilejohn-official/loyalty-program-api.git
+cd loyalty-program-api
+```
+
+1. Install dependencies:
+
+```bash
+composer install
+```
+
+1. Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+1. Generate application key:
+
+```bash
+php artisan key:generate
+```
+
+1. Set up the test environment:
+
+```bash
+# Make the setup script executable
+chmod +x setup-tests.sh
+
+# Run the setup script
+./setup-tests.sh
+```
+
+The setup script will:
+
+- Create the test database (loyalty_test)
+- Configure the test environment (.env.testing)
+- Run migrations for the test database
+
 ## Payment Provider Configuration
 
 The loyalty program supports multiple payment providers for processing cashback rewards. Currently supported providers:
@@ -185,6 +228,59 @@ class NewPaymentProvider implements PaymentServiceInterface
     }
 }
 ```
+
+## Testing
+
+### Database Configuration
+
+The application uses a separate database configuration for testing to ensure test data is isolated from your development or production environment.
+
+1. Create a MySQL database for testing:
+
+```sql
+CREATE DATABASE loyalty_test;
+```
+
+1. Configure your test environment in `.env.testing`:
+
+```env
+DB_CONNECTION=mysql_test
+DB_DATABASE=loyalty_test
+```
+
+1. The test database connection is configured in `config/database.php`:
+
+```php
+'mysql_test' => [
+    'driver' => 'mysql',
+    'database' => env('DB_DATABASE', 'loyalty_test'),
+    // ... other configuration
+],
+```
+
+### Running Tests
+
+To run the test suite:
+
+```bash
+php artisan test
+```
+
+Or using Pest's CLI:
+
+```bash
+./vendor/bin/pest
+```
+
+### Test Database Migrations
+
+The test suite uses the `RefreshDatabase` trait to ensure a clean database state for each test. This will:
+
+1. Run all migrations
+2. Run each test in a transaction
+3. Roll back after each test
+
+This ensures each test runs in isolation with a fresh database state.
 
 ## License
 
