@@ -2,28 +2,29 @@
 
 namespace Database\Seeders;
 
-use App\Enums\AchievementType;
+use Faker\Generator;
 use App\Models\Achievement;
+use App\Enums\AchievementType;
 use Illuminate\Database\Seeder;
 
 class AchievementSeeder extends Seeder
 {
     public function run(): void
     {
+        $faker = app(Generator::class);
         $userIds = range(1, 10);
         $achievementTypes = AchievementType::cases();
         foreach ($userIds as $userId) {
             // Randomly unlock some achievements for each user
-            $unlockedTypes = fake()->randomElements(
+            $unlockedTypes = $faker->randomElements(
                 $achievementTypes,
-                fake()->numberBetween(0, count($achievementTypes))
+                $faker->numberBetween(0, count($achievementTypes))
             );
 
             foreach ($unlockedTypes as $type) {
-                Achievement::create([
+                Achievement::factory()->create([
                     'user_id' => $userId,
                     'achievement_type' => $type,
-                    'unlocked_at' => fake()->dateTimeBetween('-2 months', 'now'),
                     'metadata' => json_encode([
                         'milestone' => $type->getMilestone(),
                     ]),

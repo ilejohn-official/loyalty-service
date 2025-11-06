@@ -12,13 +12,13 @@ class AchievementProgressFactory extends Factory
 
     public function definition(): array
     {
-        $type = fake()->randomElement(AchievementType::cases());
+        $type = $this->faker->randomElement(AchievementType::cases());
         $targetValue = $type->getTargetValue();
 
         return [
             'user_id' => \App\Models\User::factory(),
             'achievement_type' => $type,
-            'current_value' => fake()->randomFloat(2, 0, $targetValue),
+            'current_value' => $this->faker->randomFloat(2, 0, $targetValue),
             'target_value' => $targetValue,
         ];
     }

@@ -23,7 +23,7 @@ class BadgeFactory extends Factory
             'user_id' => \App\Models\User::factory(),
             'badge_type' => $badgeType,
             'level' => $badgeType->getDefaultLevel(),
-            'earned_at' => fake()->dateTime(),
+            'earned_at' => $this->faker->dateTime(),
         ];
     }
 

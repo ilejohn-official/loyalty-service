@@ -12,8 +12,8 @@ class LoyaltyTransactionFactory extends Factory
 
     public function definition(): array
     {
-        $amount = fake()->randomFloat(2, 1, 10000);
-        $type = fake()->randomElement(TransactionType::cases());
+        $amount = $this->faker->randomFloat(2, 1, 10000);
+        $type = $this->faker->randomElement(TransactionType::cases());
 
         return [
             'user_id' => \App\Models\User::factory(),
@@ -21,7 +21,7 @@ class LoyaltyTransactionFactory extends Factory
             'type' => $type,
             // Basic points calculation: 1 point per 10 units of currency (integer)
             'points_earned' => (int) floor($amount / 10),
-            'reference' => fake()->uuid(),
+            'reference' => $this->faker->uuid(),
         ];
     }
 }

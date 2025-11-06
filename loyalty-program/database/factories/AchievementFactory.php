@@ -14,10 +14,10 @@ class AchievementFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::factory(),
-            'achievement_type' => fake()->randomElement(AchievementType::cases()),
-            'unlocked_at' => fake()->dateTime(),
+            'achievement_type' => $this->faker->randomElement(AchievementType::cases()),
+            'unlocked_at' => $this->faker->dateTime(),
             'metadata' => json_encode([
-                'milestone' => fake()->sentence(),
+                'milestone' => $this->faker->sentence(),
             ]),
         ];
     }

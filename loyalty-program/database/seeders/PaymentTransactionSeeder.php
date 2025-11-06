@@ -16,14 +16,7 @@ class PaymentTransactionSeeder extends Seeder
 
         foreach ($userIds as $userId) {
             // Create 5 transactions per user
-            for ($i = 0; $i < 5; $i++) {
-                PaymentTransaction::create([
-                    'user_id' => $userId,
-                    'amount' => fake()->randomFloat(2, 10, 1000),
-                    'provider_reference' => fake()->unique()->uuid(),
-                    'status' => fake()->randomElement(PaymentStatus::cases()),
-                ]);
-            }
+            PaymentTransaction::factory()->count(5)->create(['user_id' => $userId]);
         }
     }
 }

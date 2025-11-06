@@ -14,9 +14,9 @@ class PaymentTransactionFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::factory(),
-            'amount' => fake()->randomFloat(2, 1, 10000),
-            'provider_reference' => fake()->uuid(),
-            'status' => fake()->randomElement(PaymentStatus::cases()),
+            'amount' => $this->faker->randomFloat(2, 1, 10000),
+            'provider_reference' => $this->faker->uuid(),
+            'status' => $this->faker->randomElement(PaymentStatus::cases()),
         ];
     }
 }

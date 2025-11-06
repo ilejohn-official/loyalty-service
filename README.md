@@ -79,6 +79,7 @@ Application URL Credentials / Notes
 Customer Dashboard
 <http://localhost:5173/[USER_ID>
 Use any ID (e.g., /3)
+For Prepopulated seeders, you have 1-11 as user ids
 
 Admin Login
 <http://localhost:5173/admin/login>
@@ -86,7 +87,7 @@ Username: admin / Password: password
 
 ### 4. Running Tests
 
-The docker-compose.yml file includes a dedicated tester service configured specifically for running your PHP test suite in isolation.
+The docker-compose.yml file includes a dedicated tester service configured specifically for running the PHP test suite in isolation.
 
 The tester service:
 
