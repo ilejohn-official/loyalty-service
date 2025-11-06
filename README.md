@@ -78,6 +78,12 @@ This command will:
 
 ### 3. Accessing the Application
 
+To use the application with prepoulated data, you'll need to run
+
+```bash
+docker compose exec backend php artisan db:seed
+```
+
 Application URL Credentials / Notes
 Customer Dashboard
 <http://localhost:5173/[USER_ID>

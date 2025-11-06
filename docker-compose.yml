@@ -29,7 +29,6 @@ services:
       - loyalty-network
 
   tester:
-    # Uses the same build context as the backend
     build:
       context: ./loyalty-program
       dockerfile: Dockerfile
