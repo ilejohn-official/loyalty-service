@@ -20,7 +20,6 @@ class AchievementResource extends JsonResource
             'unlocked_at' => $this->unlocked_at?->toISOString(),
             'metadata' => $this->metadata,
             'user' => new UserResource($this->whenLoaded('user')),
-            'created_at' => $this->created_at?->toISOString(),
         ];
     }
 }

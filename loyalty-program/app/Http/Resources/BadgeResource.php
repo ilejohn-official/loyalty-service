@@ -20,7 +20,6 @@ class BadgeResource extends JsonResource
             'level' => $this->level,
             'earned_at' => $this->earned_at?->toISOString(),
             'user' => new UserResource($this->whenLoaded('user')),
-            'created_at' => $this->created_at?->toISOString(),
         ];
     }
 }

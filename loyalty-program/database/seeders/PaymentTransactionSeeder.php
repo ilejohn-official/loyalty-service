@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\PaymentStatus;
-use App\Models\PaymentTransaction;
 use Illuminate\Database\Seeder;
+use App\Models\PaymentTransaction;
 
 class PaymentTransactionSeeder extends Seeder
 {
@@ -22,7 +22,6 @@ class PaymentTransactionSeeder extends Seeder
                     'amount' => fake()->randomFloat(2, 10, 1000),
                     'provider_reference' => fake()->unique()->uuid(),
                     'status' => fake()->randomElement(PaymentStatus::cases()),
-                    'created_at' => fake()->dateTimeBetween('-3 months', 'now'),
                 ]);
             }
         }
