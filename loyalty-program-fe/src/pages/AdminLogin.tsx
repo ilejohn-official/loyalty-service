@@ -29,6 +29,7 @@ const AdminLogin: React.FC = () => {
     } else {
       // 3. Failed Login
       setError('Invalid username or password.');
+      localStorage.removeItem(ADMIN_TOKEN_KEY);
     }
   };
 
