@@ -8,19 +8,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminAccess
 {
-  /**
-   * Handle an incoming request.
-   *
-   * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-   */
-  public function handle(Request $request, Closure $next): Response
-  {
-    if (!$request->user() || !$request->user()->isAdmin()) {
-      return response()->json([
-        'message' => 'Unauthorized. Admin access required.',
-      ], Response::HTTP_FORBIDDEN);
-    }
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        if (! $request->user() || ! $request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'Unauthorized. Admin access required.',
+            ], Response::HTTP_FORBIDDEN);
+        }
 
-    return $next($request);
-  }
+        return $next($request);
+    }
 }

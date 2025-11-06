@@ -3,64 +3,55 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\BadgeType;
-use App\Services\UserClient;
-use App\Services\BadgeService;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use App\Http\Resources\BadgeResource;
-use App\Http\Requests\Api\V1\ShowBadgeRequest;
+use App\Http\Resources\UserResource;
+use App\Services\BadgeService;
+use App\Services\UserClient;
+use Illuminate\Http\JsonResponse;
 
 class BadgeController extends Controller
 {
-  public function __construct(
-    protected BadgeService $badgeService
-  ) {}
+    public function __construct(
+        protected BadgeService $badgeService
+    ) {}
 
-  /**
-   * Get user's badges.
-   *
-   * @param  int  $user_id
-   * @return \Illuminate\Http\JsonResponse
-   */
-  public function index(int $user_id, UserClient $userClient): JsonResponse
-  {
-    $user = $userClient->getById($user_id);
+    /**
+     * Get user's badges.
+     */
+    public function index(int $userId, UserClient $userClient): JsonResponse
+    {
+        $user = $userClient->getById($userId);
 
-    if (! $user) {
-      return response()->json(['message' => 'User not found'], 404);
+        if (! $user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $badgeData = $this->badgeService->getUserBadges($user);
+
+        return response()->json([
+            'data' => array_merge(
+                $badgeData,
+                ['user' => new UserResource($user)]
+            ),
+        ]);
     }
 
-    $badgeData = $this->badgeService->getUserBadges($user);
+    /**
+     * Get specific badge details.
+     */
+    public function show(int $userId, BadgeType $badgeType, UserClient $userClient): JsonResponse
+    {
+        $user = $userClient->getById($userId);
 
-    return response()->json([
-      'data' => array_merge(
-        $badgeData,
-        ['user' => new UserResource($user)]
-      )
-    ]);
-  }
+        if (! $user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-  /**
-   * Get specific badge details.
-   *
-   * @param  ShowBadgeRequest  $request
-   * @param  int  $user_id
-   * @param  BadgeType  $badgeType
-   * @return \Illuminate\Http\JsonResponse
-   */
-  public function show(ShowBadgeRequest $request, int $user_id, BadgeType $badgeType, UserClient $userClient): JsonResponse
-  {
-    $user = $userClient->getById($user_id);
-
-    if (! $user) {
-      return response()->json(['message' => 'User not found'], 404);
+        return response()->json([
+            'data' => new BadgeResource(
+                $this->badgeService->getUserBadgeByType($user, $badgeType)
+            ),
+        ]);
     }
-
-    return response()->json([
-      'data' => new BadgeResource(
-        $this->badgeService->getUserBadgeByType($user, $badgeType)
-      )
-    ]);
-  }
 }

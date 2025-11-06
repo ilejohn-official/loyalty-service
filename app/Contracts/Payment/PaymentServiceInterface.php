@@ -6,27 +6,21 @@ use App\DTOs\UserDto;
 
 interface PaymentServiceInterface
 {
-  /**
-   * Process a cashback payment to a user.
-   *
-   * @param User $user
-   * @param float $amount
-   * @return array{success: bool, reference?: string, message: string}
-   */
-  public function processCashback(UserDto $user, float $amount): array;
+    /**
+     * Process a cashback payment to a user.
+     *
+     * @param  User  $user
+     * @return array{success: bool, reference?: string, message: string}
+     */
+    public function processCashback(UserDto $user, float $amount): array;
 
-  /**
-   * Verify a transaction reference with the payment provider.
-   *
-   * @param string $reference
-   * @return bool
-   */
-  public function verifyTransaction(string $reference): bool;
+    /**
+     * Verify a transaction reference with the payment provider.
+     */
+    public function verifyTransaction(string $reference): bool;
 
-  /**
-   * Return the provider config key (e.g. 'paystack' or 'flutterwave')
-   *
-   * @return string
-   */
-  public static function getConfigKey(): string;
+    /**
+     * Return the provider config key (e.g. 'paystack' or 'flutterwave')
+     */
+    public static function getConfigKey(): string;
 }

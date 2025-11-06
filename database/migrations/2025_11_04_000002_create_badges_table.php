@@ -1,33 +1,33 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-  /**
-   * Run the migrations.
-   */
-  public function up(): void
-  {
-    Schema::create('badges', function (Blueprint $table) {
-      $table->bigIncrements('id');
-      $table->unsignedBigInteger('user_id');
-      $table->string('badge_type');
-      $table->tinyInteger('level');
-      $table->timestamp('earned_at');
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('badges', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('badge_type');
+            $table->tinyInteger('level');
+            $table->timestamp('earned_at');
 
-      // Composite unique for user_id and badge_type to prevent duplicates
-      $table->unique(['user_id', 'badge_type']);
-    });
-  }
+            // Unique constraint (user can only have ONE of each badge type)
+            $table->unique(['user_id', 'badge_type'], 'badges_user_id_badge_type_unique');
+        });
+    }
 
-  /**
-   * Reverse the migrations.
-   */
-  public function down(): void
-  {
-    Schema::dropIfExists('badges');
-  }
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('badges');
+    }
 };

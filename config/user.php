@@ -1,7 +1,7 @@
 <?php
 
 return [
-  /*
+    /*
     |--------------------------------------------------------------------------
     | User service configuration
     |--------------------------------------------------------------------------
@@ -14,15 +14,15 @@ return [
     |
     */
 
-  // Base URL for the user service (optional)
-  'service_url' => env('USER_SERVICE_URL', null),
+    // Base URL for the user service (optional)
+    'service_url' => env('USER_SERVICE_URL', null),
 
-  // HTTP timeout (seconds) when calling the user service
-  'timeout' => env('USER_SERVICE_TIMEOUT', 2),
+    // HTTP timeout (seconds) when calling the user service
+    'timeout' => env('USER_SERVICE_TIMEOUT', 2),
 
-  // Internal endpoint path (appended to service_url). Adjust if different
-  'internal_endpoint' => env('USER_SERVICE_INTERNAL_ENDPOINT', '/api/v1/internal/users/'),
+    // Internal endpoint path (appended to service_url). Adjust if different
+    'internal_endpoint' => env('USER_SERVICE_INTERNAL_ENDPOINT', '/api/v1/internal/users/'),
 
-  // Cache TTL (seconds) for user lookups when USER_SERVICE_URL is used
-  'cache_ttl' => env('USER_SERVICE_CACHE_TTL', 300),
+    // Cache TTL (seconds) for user lookups when USER_SERVICE_URL is used
+    'cache_ttl' => env('USER_SERVICE_CACHE_TTL', 300),
 ];
