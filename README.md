@@ -102,5 +102,5 @@ Executing the Test Suite
 Run all tests with:
 
 ```bash
-docker compose run --rm tester php artisan test
+docker compose run --rm --entrypoint sh tester -c "./vendor/bin/pest"
 ```

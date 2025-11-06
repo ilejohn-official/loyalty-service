@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 # Install system dependencies, git, and PHP extensions for Laravel
 RUN apt-get update && apt-get install -y \
@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libonig-dev \
+    && rm -rf /var/lib/apt/lists/* \
     # Install common extensions
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
@@ -24,7 +25,7 @@ COPY composer.json composer.lock ./
 
 # Install Composer dependencies (production environment to keep it clean)
 # We run this BEFORE copying the entire app to leverage Docker layer caching
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+RUN composer install --optimize-autoloader --no-interaction --no-scripts
 
 # Copy the entire Laravel application
 COPY . .
